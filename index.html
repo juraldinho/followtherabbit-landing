@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Follow the Rabbit — Туры по Узбекистану</title>
+  <meta name="description" content="Приём туристов в Узбекистане: Самарканд, Бухара, Хива, Ташкент. Трансфер, гиды, отели. Быстрая заявка в Telegram." />
+
+  <style>
+    :root{
+      /* Colors под твой логотип */
+      --bg0:#050812;
+      --bg1:#071427;
+      --navy:#071c2f;
+      --teal:#29c7d8;
+      --teal2:#7fe9ff;
+      --gold:#e7c06a;
+      --gold2:#ffde8d;
+      --cream:#f3f0e8;
+      --text: rgba(243,240,232,.95);
+      --muted: rgba(243,240,232,.70);
+      --border: rgba(231,192,106,.22);
+      --glass: rgba(255,255,255,.06);
+
+      --radius: 18px;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:
+        radial-gradient(900px 520px at 18% 10%, rgba(231,192,106,.12), transparent 55%),
+        radial-gradient(900px 520px at 82% 12%, rgba(41,199,216,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 60%, var(--bg0) 100%);
+      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 14px 92px;
+      position: relative;
+    }
+
+    .wrap:before{
+      content:"";
+      position: fixed;
+      inset:-30px;
+      pointer-events:none;
+      opacity:.10;
+      background:
+        linear-gradient(45deg, rgba(231,192,106,.18) 25%, transparent 25%, transparent 75%, rgba(231,192,106,.18) 75%, rgba(231,192,106,.18)),
+        linear-gradient(45deg, rgba(41,199,216,.12) 25%, transparent 25%, transparent 75%, rgba(41,199,216,.12) 75%, rgba(41,199,216,.12));
+      background-position: 0 0, 14px 14px;
+      background-size: 28px 28px;
+      filter: blur(.2px);
+      z-index:-1;
+    }
+
+    .topbar{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(7,28,47,.55);
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 0 0 2px rgba(231,192,106,.22), 0 12px 26px rgba(0,0,0,.45);
+    }
+
+    .brand-text{line-height:1.1; min-width:0;}
+    .brand-text b{
+      font-size: 14px;
+      letter-spacing:.2px;
+      display:block;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 190px;
+    }
+    .brand-text span{
+      font-size: 12px;
+      color: var(--muted);
+      display:block;
+      margin-top: 4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 190px;
+    }
+
+    .navlinks{
+      display:none;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .navlinks a{padding: 8px 10px; border-radius: 999px;}
+    .navlinks a:hover{background: rgba(255,255,255,.06); color: var(--text);}
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(231,192,106,.25);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(41,199,216,.35);
+      background: rgba(255,255,255,.07);
+    }
+    .btn.primary{
+      border-color: rgba(231,192,106,.55);
+      background: linear-gradient(135deg, rgba(231,192,106,.25), rgba(41,199,216,.10));
+    }
+
+    .hero{
+      margin-top: 14px;
+      border: 1px solid rgba(231,192,106,.22);
+      border-radius: var(--radius);
+      background: rgba(7,28,47,.42);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 260px at 10% 15%, rgba(231,192,106,.18), transparent 55%),
+        radial-gradient(600px 260px at 90% 10%, rgba(41,199,216,.14), transparent 60%);
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;
+      padding: 18px 16px;
+      display:grid;
+      gap: 14px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(231,192,106,.22);
+      background: rgba(0,0,0,.12);
+      color: var(--muted);
+      font-size: 13px;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    h1{margin:0; font-size: 26px; line-height:1.1; letter-spacing: -.4px;}
+    .sub{margin:0; color: var(--muted); line-height:1.55; font-size: 14.5px;}
+
+    .hero-ctas{display:flex; flex-wrap:wrap; gap:10px; margin-top: 4px;}
+
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top: 4px;}
+    .chip{
+      font-size: 12.5px;
+      color: var(--text);
+      border: 1px solid rgba(231,192,106,.18);
+      background: rgba(0,0,0,.10);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .section{
+      margin-top: 14px;
+      border: 1px solid rgba(231,192,106,.16);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+
+    .section .head{padding: 14px 14px 0;}
+    .section h2{margin:0; font-size: 18px; letter-spacing: -.2px;}
+    .section p{margin: 8px 0 0; color: var(--muted); line-height:1.55; font-size: 14px;}
+
+    .grid{
+      padding: 12px 14px 14px;
+      display:grid;
+      gap: 10px;
+    }
+
+    .card{
+      border:1px solid rgba(231,192,106,.16);
+      background: rgba(7,28,47,.28);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .card b{display:block; font-size: 14px; margin-bottom: 6px; color: var(--cream);}
+    .card span{color: var(--muted); font-size: 13.5px; line-height:1.5; display:block;}
+
+    .tour{
+      border:1px solid rgba(231,192,106,.18);
+      background: rgba(7,28,47,.28);
+      border-radius: 16px;
+      overflow:hidden;
+    }
+    .tour .img{
+      height: 88px;
+      background:
+        linear-gradient(135deg, rgba(231,192,106,.18), rgba(41,199,216,.10)),
+        radial-gradient(420px 140px at 20% 20%, rgba(255,255,255,.10), transparent 60%);
+      border-bottom: 1px solid rgba(231,192,106,.14);
+    }
+    .tour .body{padding: 12px; display:grid; gap: 8px;}
+    .badges{display:flex; flex-wrap:wrap; gap:6px;}
+    .badge{
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(231,192,106,.16);
+      background: rgba(0,0,0,.10);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .tour h3{margin:0; font-size: 15px; letter-spacing:-.2px;}
+    .tour .desc{margin:0; color: var(--muted); line-height:1.55; font-size: 13.5px;}
+    .tour .row{display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-top: 4px;}
+    .price{font-weight: 900; color: var(--cream); font-size: 14px;}
+
+    details{
+      border:1px solid rgba(231,192,106,.16);
+      background: rgba(7,28,47,.28);
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+    summary{cursor:pointer; font-weight: 900; list-style:none; outline:none;}
+    summary::-webkit-details-marker{display:none}
+    details p{margin: 8px 0 0; color: var(--muted); font-size: 13.5px; line-height:1.55;}
+
+    form{display:grid; gap: 10px;}
+    label{
+      font-size: 12px;
+      color: var(--muted);
+      display:block;
+      margin: 2px 0 6px;
+    }
+    input, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(231,192,106,.18);
+      background: rgba(0,0,0,.12);
+      color: var(--text);
+      outline:none;
+      font-size: 14px;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(41,199,216,.45);
+      box-shadow: 0 0 0 3px rgba(41,199,216,.10);
+    }
+    textarea{min-height: 92px; resize: vertical}
+
+    .two{display:grid; gap: 10px;}
+
+    /* Multi-city selector */
+    .checkgrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .check{
+      border:1px solid rgba(231,192,106,.16);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+      padding: 10px 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .check input{
+      width:18px;
+      height:18px;
+      margin:0;
+      accent-color: var(--teal);
+    }
+    .check span{
+      color: var(--text);
+      font-weight: 800;
+      font-size: 13.5px;
+    }
+    .helper{
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height:1.45;
+      margin-top: -2px;
+    }
+
+    .footer{
+      margin-top: 14px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 12.5px;
+      padding: 10px 0 4px;
+    }
+
+    .sticky{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px 12px;
+      background: linear-gradient(180deg, rgba(5,8,18,0) 0%, rgba(5,8,18,.88) 35%, rgba(5,8,18,.96) 100%);
+      z-index: 50;
+    }
+    .sticky-inner{
+      max-width: 980px;
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .sticky .btn{padding: 12px 12px; font-size: 14px;}
+
+    @media (min-width: 900px){
+      .wrap{padding: 18px 18px 30px}
+      .navlinks{display:flex}
+      h1{font-size: 34px}
+      .hero-inner{
+        padding: 22px;
+        grid-template-columns: 1.2fr .8fr;
+        align-items:start;
+      }
+      .hero-right{
+        border-left: 1px solid rgba(231,192,106,.16);
+        padding-left: 16px;
+      }
+      .two{grid-template-columns: 1fr 1fr;}
+      .grid.cols3{grid-template-columns: repeat(3, 1fr);}
+      .checkgrid{grid-template-columns: repeat(4, 1fr);}
+      .sticky{display:none}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="topbar">
+      <div class="brand">
+        <img class="logo" src="logo.png" alt="Follow the Rabbit logo" />
+        <div class="brand-text">
+          <b>Follow the Rabbit</b>
+          <span>Туры по Узбекистану • Приём туристов</span>
+        </div>
+      </div>
+
+      <nav class="navlinks" aria-label="Навигация">
+        <a href="#tours">Туры</a>
+        <a href="#why">Почему мы</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Заявка</a>
+      </nav>
+
+      <div style="display:flex; gap:8px">
+        <a class="btn primary" id="tgTop" href="#" rel="noopener">Telegram</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="tag">🐇 Следуй за кроликом → и окажешься в “стране чудес”: <b>Узбекистан</b></div>
+
+          <h1>Самарканд • Бухара • Хива • Ташкент — просто, красиво, без суеты</h1>
+
+          <p class="sub">
+            Организуем путешествие “под ключ”: встреча, транспорт, отели, гиды и маршрут.
+            Подберём программу под твой стиль: классика, гастро, фото-тур, семейный или VIP.
+          </p>
+
+          <div class="hero-ctas">
+            <a class="btn primary" href="#contact">Оставить заявку</a>
+            <a class="btn" href="#tours">Посмотреть туры</a>
+          </div>
+
+          <div class="chips">
+            <div class="chip">♠ Встреча в аэропорту</div>
+            <div class="chip">♦ Трансфер и логистика</div>
+            <div class="chip">♥ Отели под бюджет</div>
+            <div class="chip">♣ Сильные гиды</div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="card" style="margin-top:2px">
+            <b>Быстрый расчёт тура</b>
+            <span>Напиши даты и количество людей — ответим с маршрутом и стоимостью.</span>
+            <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap">
+              <a class="btn primary" href="#contact">Рассчитать</a>
+              <a class="btn" id="tgHero" href="#" rel="noopener">Написать в TG</a>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:10px">
+            <b>Форматы</b>
+            <span>Индивидуальные • Групповые • Семейные • VIP • Гастро • Фото-туры</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tours">
+      <div class="head">
+        <h2>Популярные туры</h2>
+        <p>Минимум текста — максимум ясности. Цены поставь “от …” и уточняй после заявки.</p>
+      </div>
+
+      <div class="grid">
+        <div class="tour">
+          <div class="img" aria-hidden="true"></div>
+          <div class="body">
+            <div class="badges">
+              <span class="badge">3 дня</span>
+              <span class="badge">Самарканд</span>
+              <span class="badge">must-see</span>
+            </div>
+            <h3>Самарканд: архитектура + гастро</h3>
+            <p class="desc">Регистан, Гур-Эмир, Биби-Ханум, Сиаб + лучшие места для фото.</p>
+            <div class="row">
+              <a class="btn" href="#contact">Хочу</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour">
+          <div class="img" aria-hidden="true"></div>
+          <div class="body">
+            <div class="badges">
+              <span class="badge">5–7 дней</span>
+              <span class="badge">Самарканд + Бухара</span>
+              <span class="badge">классика</span>
+            </div>
+            <h3>Два города-легенды</h3>
+            <p class="desc">Комфортный темп, без “гонки”, с вечерними прогулками и двориками.</p>
+            <div class="row">
+              <a class="btn" href="#contact">Рассчитать</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour">
+          <div class="img" aria-hidden="true"></div>
+          <div class="body">
+            <div class="badges">
+              <span class="badge">7–10 дней</span>
+              <span class="badge">4 города</span>
+              <span class="badge">максимум</span>
+            </div>
+            <h3>Самарканд • Бухара • Хива • Ташкент</h3>
+            <p class="desc">Полный маршрут по Узбекистану + логистика, отели, гиды под стиль.</p>
+            <div class="row">
+              <a class="btn" href="#contact">Хочу всё</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="head">
+        <h2>Почему мы</h2>
+        <p>Коротко: чтобы человек понял ценность за 5 секунд.</p>
+      </div>
+
+      <div class="grid cols3">
+        <div class="card">
+          <b>Чётко и вовремя</b>
+          <span>План, тайминг, точки, трансфер — без “как получится”.</span>
+        </div>
+        <div class="card">
+          <b>Красиво и “вкусно”</b>
+          <span>Локации для вау-фото + гастро-точки, которые реально радуют.</span>
+        </div>
+        <div class="card">
+          <b>Под тебя</b>
+          <span>Темп тура, отели, интересы — всё адаптируем под гостей.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="head">
+        <h2>FAQ</h2>
+        <p>Самые частые вопросы — без лишнего.</p>
+      </div>
+
+      <div class="grid">
+        <details>
+          <summary>Вы делаете туры “под ключ”?</summary>
+          <p>Да: встреча, транспорт, отели, гид, маршрут и билеты (по необходимости).</p>
+        </details>
+
+        <details>
+          <summary>Можно ли изменить маршрут?</summary>
+          <p>Да. Сначала узнаем ваши интересы и темп, затем соберём оптимальный план.</p>
+        </details>
+
+        <details>
+          <summary>На каком языке экскурсии?</summary>
+          <p>Русский. По запросу можем подобрать англоговорящего гида.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="head">
+        <h2>Заявка за 30 секунд</h2>
+        <p>Выбери несколько городов — заявка уйдёт в наш Telegram-группу.</p>
+      </div>
+
+      <div class="grid">
+        <form id="leadForm">
+          <div class="two">
+            <div>
+              <label for="name">Имя</label>
+              <input id="name" name="name" placeholder="Например: Анна" required />
+            </div>
+            <div>
+              <label for="phone">Телефон</label>
+              <input id="phone" name="phone" placeholder="+7..." required />
+            </div>
+          </div>
+
+          <div class="two">
+            <div>
+              <label for="dates">Даты поездки</label>
+              <input id="dates" name="dates" placeholder="10–17 марта" />
+            </div>
+            <div>
+              <label for="people">Количество человек</label>
+              <input id="people" name="people" placeholder="Например: 2" />
+            </div>
+          </div>
+
+          <!-- Мультивыбор городов -->
+          <div>
+            <label>Выберите города (можно несколько)</label>
+            <div class="checkgrid">
+              <label class="check"><input type="checkbox" name="cities" value="Самарканд"><span>Самарканд</span></label>
+              <label class="check"><input type="checkbox" name="cities" value="Бухара"><span>Бухара</span></label>
+              <label class="check"><input type="checkbox" name="cities" value="Хива"><span>Хива</span></label>
+              <label class="check"><input type="checkbox" name="cities" value="Ташкент"><span>Ташкент</span></label>
+            </div>
+            <div class="helper">Если города ещё не выбраны — мы уточним в Telegram.</div>
+          </div>
+
+          <div>
+            <label for="msg">Пожелания</label>
+            <textarea id="msg" name="msg" placeholder="Отели 3*/4*/5*? Темп тура? Что обязательно хотите увидеть?"></textarea>
+          </div>
+
+          <button class="btn primary" type="submit">Отправить заявку</button>
+          <div style="color:var(--muted); font-size:12.5px; line-height:1.45">
+            Нажимая “Отправить”, вы соглашаетесь, что мы свяжемся с вами по указанным контактам.
+          </div>
+        </form>
+
+        <div class="card">
+          <b>Наш Telegram бот</b>
+          <span>Можешь написать сразу — это самый быстрый способ.</span>
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap">
+            <a class="btn primary" id="tgBox" href="#" rel="noopener">Перейти в Telegram</a>
+          </div>
+          <div style="margin-top:12px; color:var(--muted); font-size:12.5px; line-height:1.55">
+            Instagram: @followtherabbittour<br/>
+            Город: Самарканд, Узбекистан
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      © <span id="year"></span> Follow the Rabbit • Made in Uzbekistan 🐇
+    </div>
+  </div>
+
+  <div class="sticky">
+    <div class="sticky-inner">
+      <a class="btn primary" id="tgBottom" href="#" rel="noopener">Telegram</a>
+    </div>
+  </div>
+
+  <script>
+    // === Telegram bot link (как ты попросил) ===
+    const TG_BOT_LINK = "https://t.me/followtherabbittour_bot";
+
+    // === ВАЖНО: чтобы форма отправляла в группу, нужен BOT TOKEN ===
+    // Вписать сюда токен бота от @BotFather:
+    const TG_BOT_TOKEN = ""; // пример: "123456:ABC..."
+
+    // Группа/чат id, куда шлём заявку:
+    const TG_CHAT_ID = "-5156625620";
+
+    // Проставляем ссылки на Telegram
+    ["tgTop","tgHero","tgBox","tgBottom"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.href = TG_BOT_LINK;
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function getSelectedCities(form){
+      const selected = Array.from(form.querySelectorAll('input[name="cities"]:checked'))
+        .map(x => x.value);
+      return selected.length ? selected.join(", ") : "— не выбрано";
+    }
+
+    async function sendToTelegram(text){
+      if(!TG_BOT_TOKEN){
+        return { ok:false, reason:"no_token" };
+      }
+      const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          chat_id: TG_CHAT_ID,
+          text,
+          disable_web_page_preview: true
+        })
+      });
+      return res.json();
+    }
+
+    document.getElementById("leadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      const cities = getSelectedCities(form);
+
+      const msg =
+`🧾 Новая заявка (Follow the Rabbit)
+Имя: ${data.name}
+Телефон: ${data.phone}
+Даты: ${data.dates || "-"}
+Людей: ${data.people || "-"}
+Города: ${cities}
+Комментарий: ${data.msg || "-"}`;
+
+      const r = await sendToTelegram(msg);
+
+      if(!r.ok){
+        window.open(TG_BOT_LINK, "_blank");
+        alert("Заявка не отправилась автоматически. Открылся Telegram-бот — напишите туда, пожалуйста.");
+      } else {
+        alert("✅ Заявка отправлена! Скоро свяжемся.");
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
