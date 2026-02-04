@@ -381,35 +381,112 @@
       .grid.cols3{grid-template-columns: repeat(3, 1fr);}
       .checkgrid{grid-template-columns: repeat(4, 1fr);}
       .sticky{display:none}
+
+      
     }
+
+        /* ===== Новый верх с большим логотипом ===== */
+
+    .topbar-center{
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 14px 16px;
+    border-radius: 22px;
+    }
+
+    .big-brand{
+    flex-direction: column;
+    gap: 10px;
+    }
+
+    .logo-big{
+    width: 110px;
+    height: 110px;
+    box-shadow: 0 0 0 4px rgba(231,192,106,.35),
+                0 20px 40px rgba(0,0,0,.45);
+    }
+
+    .center-text{
+    text-align: center;
+    }
+
+    .center-text b{
+    font-size: 20px;
+    letter-spacing: .5px;
+    }
+
+    .center-text span{
+    font-size: 14px;
+    color: var(--muted);
+    }
+
+    .nav-center{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    }
+
+    .nav-center a{
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(231,192,106,.25);
+    background: rgba(0,0,0,.15);
+    font-size: 13.5px;
+    }
+
+    .nav-center a:hover{
+    background: rgba(231,192,106,.18);
+    color: var(--text);
+    }
+
+    /* Десктоп */
+    @media (min-width: 900px){
+    .logo-big{
+        width: 140px;
+        height: 140px;
+    }
+    .center-text b{
+        font-size: 24px;
+    }
+    }
+
+
+
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <header class="topbar">
-      <div class="brand">
-        <img class="logo" src="logo.png" alt="Follow the Rabbit logo" />
-        <div class="brand-text">
-          <b>Follow the Rabbit</b>
-          <span>Туры по Узбекистану • Приём туристов</span>
+<header class="topbar topbar-center">
+    <div class="brand big-brand">
+        <img class="logo logo-big" src="logo.png" alt="Follow the Rabbit logo" />
+        <div class="brand-text center-text">
+            <b>Follow the Rabbit</b>
+            <span>Туры по Узбекистану</span>
         </div>
-      </div>
-
-      <nav class="navlinks" aria-label="Навигация">
+    </div>
+      
+    <nav class="navlinks nav-center">
         <a href="#tours">Туры</a>
         <a href="#why">Почему мы</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Заявка</a>
-      </nav>
-
-      <div style="display:flex; gap:8px">
-        <a class="btn primary" id="tgTop" href="#" rel="noopener">Telegram</a>
-      </div>
-    </header>
+    </nav>
+</header>
 
     <section class="hero">
+        <h1 style="
+            text-align:center;
+            margin-bottom:10px;
+            font-size:28px;
+            letter-spacing:-.5px;
+        ">
+            Туры по Узбекистану
+        </h1>
+
       <div class="hero-inner">
         <div>
           <div class="tag">🐇 Следуй за кроликом и окажешься в “стране чудес”</div>
@@ -628,10 +705,19 @@
   </div>
 
   <div class="sticky">
-    <div class="sticky-inner">
-      <a class="btn primary" id="tgBottom" href="#" rel="noopener">Telegram</a>
+    <div class="sticky-inner" style="display:flex; gap:10px;">
+      <a class="btn primary" id="tgBottom" href="#" rel="noopener">
+        Telegram
+      </a>
+      <a class="btn" 
+         href="https://instagram.com/followtherabbittour" 
+         target="_blank" 
+         rel="noopener">
+        Instagram
+      </a>
     </div>
   </div>
+  
 
   <script>
     // === Telegram bot link (как ты попросил) ===
