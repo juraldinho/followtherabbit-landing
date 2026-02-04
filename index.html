@@ -238,12 +238,23 @@
       overflow:hidden;
     }
     .tour .img{
-      height: 88px;
-      background:
-        linear-gradient(135deg, rgba(231,192,106,.18), rgba(41,199,216,.10)),
-        radial-gradient(420px 140px at 20% 20%, rgba(255,255,255,.10), transparent 60%);
-      border-bottom: 1px solid rgba(231,192,106,.14);
+      height: 110px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
     }
+    .tour .img::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(
+        to top,
+        rgba(5,8,18,.55),
+        rgba(5,8,18,.15),
+        rgba(5,8,18,.05)
+      );
+    }
+
     .tour .body{padding: 12px; display:grid; gap: 8px;}
     .badges{display:flex; flex-wrap:wrap; gap:6px;}
     .badge{
@@ -401,7 +412,7 @@
     <section class="hero">
       <div class="hero-inner">
         <div>
-          <div class="tag">🐇 Следуй за кроликом → и окажешься в “стране чудес”: <b>Узбекистан</b></div>
+          <div class="tag">🐇 Следуй за кроликом и окажешься в “стране чудес”</div>
 
           <h1>Самарканд • Бухара • Хива • Ташкент — просто, красиво, без суеты</h1>
 
@@ -449,7 +460,7 @@
 
       <div class="grid">
         <div class="tour">
-          <div class="img" aria-hidden="true"></div>
+          <div class="img" style="background-image:url('khiva.png'); background-size:cover; background-position:center;"></div>
           <div class="body">
             <div class="badges">
               <span class="badge">3 дня</span>
@@ -465,7 +476,7 @@
         </div>
 
         <div class="tour">
-          <div class="img" aria-hidden="true"></div>
+          <div class="img" style="background-image:url('samarkand.png'); background-size:cover; background-position:center;"></div>
           <div class="body">
             <div class="badges">
               <span class="badge">5–7 дней</span>
@@ -481,7 +492,7 @@
         </div>
 
         <div class="tour">
-          <div class="img" aria-hidden="true"></div>
+          <div class="img" style="background-image:url('bukhara.png'); background-size:cover; background-position:center;"></div>
           <div class="body">
             <div class="badges">
               <span class="badge">7–10 дней</span>
@@ -625,13 +636,8 @@
   <script>
     // === Telegram bot link (как ты попросил) ===
     const TG_BOT_LINK = "https://t.me/followtherabbittour_bot";
+    const API_BASE = "https://followtherabbit-landing-production.up.railway.app";
 
-    // === ВАЖНО: чтобы форма отправляла в группу, нужен BOT TOKEN ===
-    // Вписать сюда токен бота от @BotFather:
-    const TG_BOT_TOKEN = ""; // пример: "123456:ABC..."
-
-    // Группа/чат id, куда шлём заявку:
-    const TG_CHAT_ID = "-5156625620";
 
     // Проставляем ссылки на Telegram
     ["tgTop","tgHero","tgBox","tgBottom"].forEach(id => {
@@ -647,49 +653,40 @@
       return selected.length ? selected.join(", ") : "— не выбрано";
     }
 
-    async function sendToTelegram(text){
-      if(!TG_BOT_TOKEN){
-        return { ok:false, reason:"no_token" };
-      }
-      const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-          chat_id: TG_CHAT_ID,
-          text,
-          disable_web_page_preview: true
-        })
-      });
-      return res.json();
-    }
 
     document.getElementById("leadForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const data = Object.fromEntries(new FormData(form).entries());
+        e.preventDefault();
+        const form = e.target;
+        const data = Object.fromEntries(new FormData(form).entries());
 
-      const cities = getSelectedCities(form);
+        // cities у тебя сейчас строкой (через запятую), мы оставим как строку
+        const cities = getSelectedCities(form);
 
-      const msg =
-`🧾 Новая заявка (Follow the Rabbit)
-Имя: ${data.name}
-Телефон: ${data.phone}
-Даты: ${data.dates || "-"}
-Людей: ${data.people || "-"}
-Города: ${cities}
-Комментарий: ${data.msg || "-"}`;
+        try {
+            const resp = await fetch(`${API_BASE}/lead`, {
+            method: "POST",
+            headers: { "Content-Type":"application/json" },
+            body: JSON.stringify({
+                name: data.name,
+                phone: data.phone,
+                dates: data.dates || "",
+                people: data.people || "",
+                cities: cities,          // строка: "Самарканд, Бухара"
+                msg: data.msg || ""
+            })
+            });
 
-      const r = await sendToTelegram(msg);
+            const j = await resp.json();
+            if (!j.ok) throw new Error(j.error || "failed");
 
-      if(!r.ok){
-        window.open(TG_BOT_LINK, "_blank");
-        alert("Заявка не отправилась автоматически. Открылся Telegram-бот — напишите туда, пожалуйста.");
-      } else {
-        alert("✅ Заявка отправлена! Скоро свяжемся.");
-        form.reset();
-      }
+            alert("✅ Заявка отправлена! Скоро свяжемся.");
+            form.reset();
+        } catch (err) {
+            window.open(TG_BOT_LINK, "_blank");
+            alert("Заявка не отправилась автоматически. Открылся Telegram-бот — напишите туда, пожалуйста.");
+        }
     });
+
   </script>
 </body>
 </html>
