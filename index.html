@@ -6,6 +6,24 @@
   <title>Follow the Rabbit — Туры по Узбекистану</title>
   <meta name="description" content="Приём туристов в Узбекистане: Самарканд, Бухара, Хива, Ташкент. Трансфер, гиды, отели. Быстрая заявка в Telegram." />
 
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "yfmnezrz1w");
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-67ZK045K3D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-67ZK045K3D");
+  </script>
+
   <style>
     :root{
       /* Colors под твой логотип */
@@ -724,11 +742,24 @@
     const TG_BOT_LINK = "https://t.me/followtherabbittour_bot";
     const API_BASE = "https://resilient-communication-production.up.railway.app";
 
+    function trackEvent(name, params = {}) {
+      if (typeof gtag === "function") gtag("event", name, params);
+      if (typeof clarity === "function") clarity("event", name);
+    }
 
     // Проставляем ссылки на Telegram
     ["tgTop","tgHero","tgBox","tgBottom"].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.href = TG_BOT_LINK;
+      if (el) {
+        el.href = TG_BOT_LINK;
+        el.addEventListener("click", () => {
+          trackEvent("telegram_click", { button_location: id });
+        });
+      }
+    });
+
+    document.querySelectorAll('a[href*="instagram.com"]').forEach(el => {
+      el.addEventListener("click", () => trackEvent("instagram_click"));
     });
 
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -740,7 +771,26 @@
     }
 
 
-    document.getElementById("leadForm").addEventListener("submit", async (e) => {
+    const leadForm = document.getElementById("leadForm");
+    let formStarted = false;
+
+    leadForm.addEventListener("focusin", () => {
+      if (formStarted) return;
+      formStarted = true;
+      trackEvent("form_start");
+    });
+
+    if ("IntersectionObserver" in window) {
+      const contactSection = document.getElementById("contact");
+      const contactObserver = new IntersectionObserver((entries, observer) => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        trackEvent("view_contact");
+        observer.disconnect();
+      }, { threshold: 0.35 });
+      contactObserver.observe(contactSection);
+    }
+
+    leadForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const form = e.target;
         const data = Object.fromEntries(new FormData(form).entries());
@@ -765,9 +815,11 @@
             const j = await resp.json();
             if (!j.ok) throw new Error(j.error || "failed");
 
+            trackEvent("generate_lead", { lead_source: "website_form" });
             alert("✅ Заявка отправлена! Скоро свяжемся.");
             form.reset();
         } catch (err) {
+            trackEvent("lead_error");
             window.open(TG_BOT_LINK, "_blank");
             alert("Заявка не отправилась автоматически. Открылся Telegram-бот — напишите туда, пожалуйста.");
         }
